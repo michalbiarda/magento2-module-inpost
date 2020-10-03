@@ -1,0 +1,22 @@
+<div if="isVisible()" class="mb-inpost-locker-fieldset-wrapper">
+    <div class="step-title" translate="'Shipping details'"></div>
+    <div class="fieldset">
+        <div class="field _required">
+            <label class="label">
+                <span translate="'Locker'"></span>
+            </label>
+            <div class="control">
+                <span if="selectedLocker()" class="selected-locker"
+                      data-bind="text: getSelectedLockerLabel()">
+                </span>
+                <button click="openModal">
+                    <span if="!selectedLocker()" translate="'Choose'"></span>
+                    <span if="selectedLocker()" translate="'Change'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="locker-modal-content" data-bind="afterRender: initModal">
+        <iframe data-bind="attr: {src: getIframeSrc()}"></iframe>
+    </div>
+</div>

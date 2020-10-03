@@ -1,0 +1,23 @@
+{
+  "name": "michalbiarda/magento2-module-inpost",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "email": "m.biarda@gmail.com",
+      "name": "Michał Biarda"
+    }
+  ],
+  "require": {
+    "php": "~7.2.0||~7.3.0"
+  },
+  "type": "magento2-module",
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "MB\\Inpost\\": ""
+    }
+  },
+  "license": "THE BEER-WARE LICENSE"
+}

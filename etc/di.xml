@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Michał Biarda. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">
+        <plugin name="mb-inpost-set-locker-data-on-cart"
+                type="MB\Inpost\Plugin\SetLockerDataOnCart" />
+    </type>
+    <type name="Magento\Quote\Model\QuoteRepository\SaveHandler">
+        <plugin name="mb-inpost-set-locker-data-on-quote-before-save"
+                type="MB\Inpost\Plugin\SetLockerDataOnQuoteBeforeSave" />
+    </type>
+    <type name="Magento\Quote\Model\QuoteRepository\LoadHandler">
+        <plugin name="mb-inpost-set-locker-data-on-quote-after-load"
+                type="MB\Inpost\Plugin\SetLockerDataOnQuoteAfterLoad" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order">
+        <plugin name="mb-inpost-add-locker-data-to-shipping-description-before-save"
+                type="MB\Inpost\Plugin\AddLockerDataToShippingDescriptionBeforeSave" />
+    </type>
+</config>

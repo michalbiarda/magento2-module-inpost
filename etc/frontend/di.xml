@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Michał Biarda. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
+        <plugin name="mb-inpost-customize-checkout-layout"
+                type="MB\Inpost\Plugin\CustomizeCheckoutLayout" />
+    </type>
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="mb_inpost_provider" xsi:type="object">MB\Inpost\Model\CheckoutConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

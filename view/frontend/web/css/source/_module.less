@@ -1,0 +1,46 @@
+// /**
+//  * Copyright © Michał Biarda. All rights reserved.
+//  * See LICENSE.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+  .mb-inpost-locker-fieldset-wrapper {
+    margin-top: 20px;
+
+    .fieldset {
+      margin-top: @checkout-shipping-address__margin-top;
+
+      .selected-locker {
+        padding: 6px 0;
+        display: block;
+      }
+    }
+  }
+  .mb-inpost-modal-choose-locker {
+    .modal-content {
+      padding: 0;
+      flex: 1;
+      position: relative;
+    }
+    .modal-inner-wrap {
+      height: 100%;
+    }
+    #locker-modal-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+    iframe {
+      border: 0;
+      width: 100%;
+      height: 100%;
+      margin-bottom: -10px;
+    }
+  }
+}

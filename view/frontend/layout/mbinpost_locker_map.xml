@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Michał Biarda. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="empty"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="https://geowidget.easypack24.net/js/sdk-for-javascript.js" src_type="url" />
+        <css src="https://geowidget.easypack24.net/css/easypack.css" src_type="url" />
+        <css src="MB_Inpost::css/locker.css" />
+    </head>
+    <body>
+        <referenceContainer name="root">
+            <block name="locker.map" class="Magento\Framework\View\Element\Template"
+                   template="MB_Inpost::locker/map.phtml" />
+        </referenceContainer>
+    </body>
+</page>

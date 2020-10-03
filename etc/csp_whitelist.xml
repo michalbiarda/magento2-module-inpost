@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Michał Biarda. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="style-src">
+            <values>
+                <value id="inpost_geowidget" type="host">https://geowidget.easypack24.net</value>
+                <value id="inpost_unpkg" type="host">https://unpkg.com</value>
+                <value id="inpost_mapbox" type="host">https://api.mapbox.com</value>
+                <value id="inpost_leaflet_locatecontrol" type="host">https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css</value>
+                <value id="inpost_bootstrapcdn" type="host">https://maxcdn.bootstrapcdn.com</value>
+            </values>
+        </policy>
+        <policy id="script-src">
+            <values>
+                <value id="inpost_geowidget" type="host">https://geowidget.easypack24.net</value>
+                <value id="inpost_unpkg" type="host">https://unpkg.com</value>
+                <value id="inpost_mapbox" type="host">https://api.mapbox.com</value>
+                <value id="inpost_leaflet_locatecontrol" type="host">https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="inpost_geowidget" type="host">https://geowidget.easypack24.net</value>
+                <value id="inpost_bootstrapcdn" type="host">https://maxcdn.bootstrapcdn.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="inpost_geowidget" type="host">https://geowidget.easypack24.net</value>
+                <value id="inpost_openstreetmap" type="host">https://*.openstreetmap.org</value>
+                <value id="inpost_inpost" type="host">https://osm.inpost.pl</value>
+                <value id="inpost_mapbox" type="host">https://api.mapbox.com</value>
+                <value id="inpost_data" type="host">data:</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="inpost_api_pl_points" type="host">https://api-pl-points.easypack24.net</value>
+                <value id="inpost_osm" type="host">https://osm.inpost.pl</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>
