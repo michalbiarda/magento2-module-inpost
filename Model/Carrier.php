@@ -66,6 +66,7 @@ class Carrier extends AbstractCarrier implements CarrierInterface
     /**
      * @param  RateRequest $request
      * @return Result|bool
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function collectRates(RateRequest $request)
     {

@@ -6,17 +6,17 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
-    <scope id="global">
-        <fieldset id="mb_inpost_sales_convert_quote">
-            <field name="mb_inpost_locker_name">
-                <aspect name="to_order" />
-            </field>
-            <field name="mb_inpost_locker_address_line_1">
-                <aspect name="to_order" />
-            </field>
-            <field name="mb_inpost_locker_address_line_2">
-                <aspect name="to_order" />
-            </field>
-        </fieldset>
-    </scope>
+	<scope id="global">
+		<fieldset id="sales_convert_quote">
+			<field name="mb_inpost_locker_name">
+				<aspect name="to_order"/>
+			</field>
+			<field name="mb_inpost_locker_address_line_1">
+				<aspect name="to_order"/>
+			</field>
+			<field name="mb_inpost_locker_address_line_2">
+				<aspect name="to_order"/>
+			</field>
+		</fieldset>
+	</scope>
 </config>

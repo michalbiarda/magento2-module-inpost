@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Michał Biarda. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="quote">
+        <column xsi:type="varchar" length="16" nullable="true" name="mb_inpost_locker_name" comment="Mb Inpost Locker Name"/>
+        <column xsi:type="varchar" length="255" nullable="true" name="mb_inpost_locker_address_line_1" comment="Mb Inpost Locker Address Line 1"/>
+        <column xsi:type="varchar" length="255" nullable="true" name="mb_inpost_locker_address_line_2" comment="Mb Inpost Locker Address Line 2"/>
+    </table>
+    <table name="sales_order">
+        <column xsi:type="varchar" length="16" nullable="true" name="mb_inpost_locker_name" comment="Mb Inpost Locker Name"/>
+        <column xsi:type="varchar" length="255" nullable="true" name="mb_inpost_locker_address_line_1" comment="Mb Inpost Locker Address Line 1"/>
+        <column xsi:type="varchar" length="255" nullable="true" name="mb_inpost_locker_address_line_2" comment="Mb Inpost Locker Address Line 2"/>
+    </table>
+</schema>

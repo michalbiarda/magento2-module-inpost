@@ -8,10 +8,11 @@ namespace MB\Inpost\Controller\Locker;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
-class Map extends Action
+class Map extends Action implements HttpGetActionInterface
 {
     /**
      * @var PageFactory

@@ -11,6 +11,10 @@ use Magento\Checkout\Model\Session;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
+/**
+ * @todo Check if it is possible to not use session here.
+ * @SuppressWarnings(PHPMD.CookieAndSessionMisuse)
+ */
 class CheckoutConfigProvider implements ConfigProviderInterface
 {
     /**

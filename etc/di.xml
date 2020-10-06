@@ -5,21 +5,21 @@
  * See LICENSE.txt for license details.
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">
-        <plugin name="mb-inpost-set-locker-data-on-cart"
-                type="MB\Inpost\Plugin\SetLockerDataOnCart" />
+        <plugin name="mb-inpost-set-locker-data-on-cart" type="MB\Inpost\Plugin\SetLockerDataOnCart"/>
     </type>
-    <type name="Magento\Quote\Model\QuoteRepository\SaveHandler">
-        <plugin name="mb-inpost-set-locker-data-on-quote-before-save"
-                type="MB\Inpost\Plugin\SetLockerDataOnQuoteBeforeSave" />
+    <type name="Magento\Quote\Api\CartRepositoryInterface">
+        <plugin name="mb-inpost-set-cart-extension-attributes" type="MB\Inpost\Plugin\SetCartExtensionAttributes"/>
     </type>
-    <type name="Magento\Quote\Model\QuoteRepository\LoadHandler">
-        <plugin name="mb-inpost-set-locker-data-on-quote-after-load"
-                type="MB\Inpost\Plugin\SetLockerDataOnQuoteAfterLoad" />
-    </type>
-    <type name="Magento\Sales\Model\ResourceModel\Order">
+    <type name="Magento\Sales\Api\OrderRepositoryInterface">
+        <plugin name="mb-inpost-set-order-extension-attributes"
+                type="MB\Inpost\Plugin\SetOrderExtensionAttributes"/>
         <plugin name="mb-inpost-add-locker-data-to-shipping-description-before-save"
-                type="MB\Inpost\Plugin\AddLockerDataToShippingDescriptionBeforeSave" />
+                type="MB\Inpost\Plugin\AddLockerDataToShippingDescriptionBeforeSave"/>
+    </type>
+    <type name="Magento\Framework\Reflection\FieldNamer">
+        <plugin name="mb-inpost-fix-address-line-field-names" type="MB\Inpost\Plugin\FixAddressLineFieldNames"/>
     </type>
 </config>
