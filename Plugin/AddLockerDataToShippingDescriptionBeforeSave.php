@@ -23,7 +23,7 @@ class AddLockerDataToShippingDescriptionBeforeSave
         OrderRepositoryInterface $subject,
         OrderInterface $order
     ): array {
-        if (!$order->getId() && $order->getShippingMethod() === 'mb_inpost_locker_standard') {
+        if (!$order->getId() && $order->getShippingMethod() === 'mbinpost_locker_standard') {
             $extensionAttributes = $order->getExtensionAttributes();
             $shippingDescription = $order->getShippingDescription()
                 . ' ('

@@ -22,4 +22,222 @@
     <type name="Magento\Framework\Reflection\FieldNamer">
         <plugin name="mb-inpost-fix-address-line-field-names" type="MB\Inpost\Plugin\FixAddressLineFieldNames"/>
     </type>
+    <preference for="MB\Inpost\Action\ProvideShipmentParcelsInterface"
+                type="MB\Inpost\Action\ProvideShipmentParcels"/>
+    <preference for="MB\Inpost\Action\ProvideShipmentCustomAttributesInterface"
+                type="MB\Inpost\Action\ProvideShipmentCustomAttributes"/>
+    <preference for="MB\Inpost\Action\ProvideShipmentReferenceInterface"
+                type="MB\Inpost\Action\ProvideShipmentReference"/>
+    <preference for="MB\Inpost\Action\ProvideShipmentAdditionalServicesInterface"
+                type="MB\Inpost\Action\ProvideEmptyAdditionalServices"/>
+    <preference for="MB\Inpost\Action\ProvideSendingMethodInterface"
+                type="MB\Inpost\Action\ProvideSendingMethod"/>
+    <type name="MB\Inpost\Action\ProvideSendingMethod">
+        <arguments>
+            <argument name="configPaths" xsi:type="array">
+                <item name="locker_standard" xsi:type="string">carriers/mbinpost/locker_standard_sending_method</item>
+                <item name="courier_c2c" xsi:type="string">carriers/mbinpost/courier_c2c_sending_method</item>
+                <item name="courier_standard" xsi:type="string">carriers/mbinpost/courier_standard_sending_method</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="MB\Inpost\Action\ProvideDropoffPoint">
+        <arguments>
+            <argument name="configPaths" xsi:type="array">
+                <item name="locker_standard" xsi:type="string">carriers/mbinpost/locker_standard_dropoff_point</item>
+                <item name="courier_c2c" xsi:type="string">carriers/mbinpost/courier_c2c_dropoff_point</item>
+                <item name="courier_standard" xsi:type="string">carriers/mbinpost/courier_standard_dropoff_point</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="MB\Inpost\Action\ProvideShipmentCustomAttributes">
+        <arguments>
+            <argument name="customAttributeProviders" xsi:type="array">
+                <item name="sending_method" xsi:type="object">MB\Inpost\Action\ProvideSendingMethod</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- Locker standard -->
+    <virtualType name="MB\Inpost\Action\LockerStandard\ProvideShipmentCustomAttributes"
+                 type="MB\Inpost\Action\ProvideShipmentCustomAttributes">
+        <arguments>
+            <argument name="customAttributeProviders" xsi:type="array">
+                <item name="target_point" xsi:type="object">MB\Inpost\Action\ProvideTargetPoint</item>
+                <item name="dropoff_point" xsi:type="object">MB\Inpost\Action\ProvideDropoffPoint</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Action\LockerStandard\ProvideShipmentPayload"
+                 type="MB\Inpost\Action\ProvideShipmentPayload">
+        <arguments>
+            <argument name="provideShipmentReceiver" xsi:type="object">MB\Inpost\Action\ProvideLockerShipmentReceiver</argument>
+            <argument name="provideShipmentCustomAttributes" xsi:type="object">MB\Inpost\Action\LockerStandard\ProvideShipmentCustomAttributes</argument>
+            <argument name="provideShipmentService" xsi:type="object">MB\Inpost\Action\ProvideLockerShipmentService</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Action\LockerStandard\CallShipmentCreateMethod"
+                 type="MB\Inpost\Action\CallShipmentCreateMethod">
+        <arguments>
+            <argument name="provideShipmentPayload" xsi:type="object">MB\Inpost\Action\LockerStandard\ProvideShipmentPayload</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Action\LockerStandard\ProcessShipmentRequest"
+                 type="MB\Inpost\Action\ProcessShipmentRequest">
+        <arguments>
+            <argument name="callShipmentCreateMethod" xsi:type="object">MB\Inpost\Action\LockerStandard\CallShipmentCreateMethod</argument>
+        </arguments>
+    </virtualType>
+    <!-- / Locker standard -->
+    <!-- Courier C2C -->
+    <virtualType name="MB\Inpost\Action\CourierC2C\ProvideShipmentCustomAttributes"
+                 type="MB\Inpost\Action\ProvideShipmentCustomAttributes">
+        <arguments>
+            <argument name="customAttributeProviders" xsi:type="array">
+                <item name="dropoff_point" xsi:type="object">MB\Inpost\Action\ProvideDropoffPoint</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Action\CourierC2C\CallShipmentCreateMethod"
+                 type="MB\Inpost\Action\CallShipmentCreateMethod">
+        <arguments>
+            <argument name="provideShipmentPayload" xsi:type="object">MB\Inpost\Action\CourierC2C\ProvideShipmentPayload</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Action\CourierC2C\ProvideShipmentPayload"
+                 type="MB\Inpost\Action\ProvideShipmentPayload">
+        <arguments>
+            <argument name="provideShipmentReceiver" xsi:type="object">MB\Inpost\Action\ProvideCourierShipmentReceiver</argument>
+            <argument name="provideShipmentCustomAttributes" xsi:type="object">MB\Inpost\Action\CourierC2C\ProvideShipmentCustomAttributes</argument>
+            <argument name="provideShipmentService" xsi:type="object">MB\Inpost\Action\ProvideCourierC2CShipmentService</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Action\CourierC2C\ProcessShipmentRequest"
+                 type="MB\Inpost\Action\ProcessShipmentRequest">
+        <arguments>
+            <argument name="callShipmentCreateMethod" xsi:type="object">MB\Inpost\Action\CourierC2C\CallShipmentCreateMethod</argument>
+        </arguments>
+    </virtualType>
+    <!-- / Courier C2C -->
+    <!-- Courier standard -->
+    <virtualType name="MB\Inpost\Action\CourierStandard\ProvideShipmentCustomAttributes"
+                 type="MB\Inpost\Action\ProvideShipmentCustomAttributes">
+        <arguments>
+            <argument name="customAttributeProviders" xsi:type="array">
+                <item name="dropoff_point" xsi:type="object">MB\Inpost\Action\ProvideDropoffPoint</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Action\CourierStandard\CallShipmentCreateMethod"
+                 type="MB\Inpost\Action\CallShipmentCreateMethod">
+        <arguments>
+            <argument name="provideShipmentPayload" xsi:type="object">MB\Inpost\Action\CourierStandard\ProvideShipmentPayload</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Action\CourierStandard\ProvideShipmentPayload"
+                 type="MB\Inpost\Action\ProvideShipmentPayload">
+        <arguments>
+            <argument name="provideShipmentReceiver" xsi:type="object">MB\Inpost\Action\ProvideCourierShipmentReceiver</argument>
+            <argument name="provideShipmentCustomAttributes" xsi:type="object">MB\Inpost\Action\CourierStandard\ProvideShipmentCustomAttributes</argument>
+            <argument name="provideShipmentService" xsi:type="object">MB\Inpost\Action\ProvideCourierStandardShipmentService</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Action\CourierStandard\ProcessShipmentRequest"
+                 type="MB\Inpost\Action\ProcessShipmentRequest">
+        <arguments>
+            <argument name="callShipmentCreateMethod" xsi:type="object">MB\Inpost\Action\CourierStandard\CallShipmentCreateMethod</argument>
+        </arguments>
+    </virtualType>
+    <!-- / Courier standard -->
+    <type name="MB\Inpost\Action\RequestShipment">
+        <arguments>
+            <argument name="shipmentRequestProcessors" xsi:type="array">
+                <item name="mbinpost_locker_standard" xsi:type="object">MB\Inpost\Action\LockerStandard\ProcessShipmentRequest</item>
+                <item name="mbinpost_courier_c2c" xsi:type="object">MB\Inpost\Action\CourierC2C\ProcessShipmentRequest</item>
+                <item name="mbinpost_courier_standard" xsi:type="object">MB\Inpost\Action\CourierStandard\ProcessShipmentRequest</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="MB\Inpost\CurlClient" type="Http\Client\Curl\Client">
+        <arguments>
+            <argument name="responseFactory" xsi:type="object">Http\Factory\Guzzle\ResponseFactory</argument>
+            <argument name="streamFactory" xsi:type="object">Http\Factory\Guzzle\StreamFactory</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\RequestSender" type="MB\ShipXSDK\Client\RequestSender">
+        <arguments>
+            <argument name="httpClient" xsi:type="object">MB\Inpost\CurlClient</argument>
+            <argument name="requestFactory" xsi:type="object">Http\Factory\Guzzle\RequestFactory</argument>
+            <argument name="streamFactory" xsi:type="object">Http\Factory\Guzzle\StreamFactory</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\ApiClient" type="MB\ShipXSDK\Client\Client">
+        <arguments>
+            <argument name="requestSender" xsi:type="object">MB\Inpost\RequestSender</argument>
+        </arguments>
+    </virtualType>
+    <preference for="MB\ShipXSDK\Client\Client" type="MB\Inpost\ApiClient"/>
+    <virtualType name="MB\Inpost\Model\ContainerType\Small" type="MB\Inpost\Model\ContainerType">
+        <arguments>
+            <argument name="templateName" xsi:type="string">small</argument>
+            <argument name="label" xsi:type="string" translatable="true">Size A (8 x 38 x 64 cm)</argument>
+            <argument name="width" xsi:type="number">8</argument>
+            <argument name="height" xsi:type="number">38</argument>
+            <argument name="length" xsi:type="number">64</argument>
+            <argument name="weight" xsi:type="number">25</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Model\ContainerType\Medium" type="MB\Inpost\Model\ContainerType">
+        <arguments>
+            <argument name="templateName" xsi:type="string">medium</argument>
+            <argument name="label" xsi:type="string" translatable="true">Size B (19 x 38 x 64 cm)</argument>
+            <argument name="width" xsi:type="number">19</argument>
+            <argument name="height" xsi:type="number">38</argument>
+            <argument name="length" xsi:type="number">64</argument>
+            <argument name="weight" xsi:type="number">25</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Model\ContainerType\Large" type="MB\Inpost\Model\ContainerType">
+        <arguments>
+            <argument name="templateName" xsi:type="string">large</argument>
+            <argument name="label" xsi:type="string" translatable="true">Size C (41 x 38 x 64 cm)</argument>
+            <argument name="width" xsi:type="number">41</argument>
+            <argument name="height" xsi:type="number">38</argument>
+            <argument name="length" xsi:type="number">64</argument>
+            <argument name="weight" xsi:type="number">25</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Model\ContainerType\XLarge" type="MB\Inpost\Model\ContainerType">
+        <arguments>
+            <argument name="templateName" xsi:type="string">xlarge</argument>
+            <argument name="label" xsi:type="string" translatable="true">Size D (50 x 50 x 80 cm)</argument>
+            <argument name="width" xsi:type="number">50</argument>
+            <argument name="height" xsi:type="number">50</argument>
+            <argument name="length" xsi:type="number">80</argument>
+            <argument name="weight" xsi:type="number">25</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MB\Inpost\Model\ContainerType\DomesticParcel" type="MB\Inpost\Model\ContainerType">
+        <arguments>
+            <argument name="templateName" xsi:type="string">parcel</argument>
+            <argument name="label" xsi:type="string" translatable="true">Domestic Parcel (350 x 240 x 240 cm)</argument>
+            <argument name="width" xsi:type="number">350</argument>
+            <argument name="height" xsi:type="number">240</argument>
+            <argument name="length" xsi:type="number">240</argument>
+            <argument name="weight" xsi:type="number">50</argument>
+        </arguments>
+    </virtualType>
+    <type name="MB\Inpost\Model\ContainerTypeCollection">
+        <arguments>
+            <argument name="containerTypes" xsi:type="array">
+                <item name="locker_standard_small" xsi:type="object">MB\Inpost\Model\ContainerType\Small</item>
+                <item name="locker_standard_medium" xsi:type="object">MB\Inpost\Model\ContainerType\Medium</item>
+                <item name="locker_standard_large" xsi:type="object">MB\Inpost\Model\ContainerType\Large</item>
+                <item name="courier_c2c_small" xsi:type="object">MB\Inpost\Model\ContainerType\Small</item>
+                <item name="courier_c2c_medium" xsi:type="object">MB\Inpost\Model\ContainerType\Medium</item>
+                <item name="courier_c2c_large" xsi:type="object">MB\Inpost\Model\ContainerType\Large</item>
+                <item name="courier_c2c_xlarge" xsi:type="object">MB\Inpost\Model\ContainerType\XLarge</item>
+                <item name="courier_standard_parcel" xsi:type="object">MB\Inpost\Model\ContainerType\DomesticParcel</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

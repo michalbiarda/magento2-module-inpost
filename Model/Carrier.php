@@ -1,66 +1,95 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
 
+declare(strict_types=1);
+
 namespace MB\Inpost\Model;
 
+use Magento\CatalogInventory\Api\StockRegistryInterface;
+use Magento\Directory\Helper\Data;
+use Magento\Directory\Model\CountryFactory;
+use Magento\Directory\Model\CurrencyFactory;
+use Magento\Directory\Model\RegionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DataObject;
+use Magento\Framework\Xml\Security;
 use Magento\Quote\Model\Quote\Address\RateRequest;
-use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
+use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory as RateErrorFactory;
 use Magento\Quote\Model\Quote\Address\RateResult\Method;
 use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
-use Magento\Shipping\Model\Carrier\AbstractCarrier;
+use Magento\Shipping\Model\Carrier\AbstractCarrierOnline;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
 use Magento\Shipping\Model\Rate\Result;
-use Magento\Shipping\Model\Rate\ResultFactory;
+use Magento\Shipping\Model\Rate\ResultFactory as RateResultFactory;
+use Magento\Shipping\Model\Simplexml\ElementFactory;
+use Magento\Shipping\Model\Tracking\Result as TrackingResult;
+use Magento\Shipping\Model\Tracking\Result\ErrorFactory as TrackingErrorFactory;
+use Magento\Shipping\Model\Tracking\Result\StatusFactory;
+use Magento\Shipping\Model\Tracking\ResultFactory as TrackingResultFactory;
+use MB\Inpost\Action\GetContainerTypesOptions;
+use MB\Inpost\Action\RequestShipment;
 use Psr\Log\LoggerInterface;
 
-class Carrier extends AbstractCarrier implements CarrierInterface
+class Carrier extends AbstractCarrierOnline implements CarrierInterface
 {
-    /**
-     * @var string
-     */
-    protected $_code = 'mb_inpost';
+    protected $_code = 'mbinpost';
 
-    /**
-     * @var ResultFactory
-     */
-    private $rateResultFactory;
+    private Config\Source\Method $methodSource;
 
-    /**
-     * @var MethodFactory
-     */
-    private $rateMethodFactory;
+    private RequestShipment $requestShipment;
 
-    /**
-     * @var Config\Source\Method
-     */
-    private $methodSource;
+    private GetContainerTypesOptions $getContainerTypesOptions;
 
-    /**
-     * @param ScopeConfigInterface $scopeConfig
-     * @param ErrorFactory $rateErrorFactory
-     * @param LoggerInterface $logger
-     * @param ResultFactory $rateResultFactory
-     * @param MethodFactory $rateMethodFactory
-     * @param Config\Source\Method $methodSource
-     * @param array $data
-     */
+    private TrackingFactory $trackingFactory;
+
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        ErrorFactory $rateErrorFactory,
+        RateErrorFactory $rateErrorFactory,
         LoggerInterface $logger,
-        ResultFactory $rateResultFactory,
+        Security $xmlSecurity,
+        ElementFactory $xmlElFactory,
+        RateResultFactory $rateFactory,
         MethodFactory $rateMethodFactory,
+        TrackingResultFactory $trackFactory,
+        TrackingErrorFactory $trackErrorFactory,
+        StatusFactory $trackStatusFactory,
+        RegionFactory $regionFactory,
+        CountryFactory $countryFactory,
+        CurrencyFactory $currencyFactory,
+        Data $directoryData,
+        StockRegistryInterface $stockRegistry,
         Config\Source\Method $methodSource,
+        RequestShipment $requestShipment,
+        GetContainerTypesOptions $getContainerTypesOptions,
+        TrackingFactory $trackingFactory,
         array $data = []
     ) {
-        parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
-        $this->rateResultFactory = $rateResultFactory;
-        $this->rateMethodFactory = $rateMethodFactory;
+        parent::__construct(
+            $scopeConfig,
+            $rateErrorFactory,
+            $logger,
+            $xmlSecurity,
+            $xmlElFactory,
+            $rateFactory,
+            $rateMethodFactory,
+            $trackFactory,
+            $trackErrorFactory,
+            $trackStatusFactory,
+            $regionFactory,
+            $countryFactory,
+            $currencyFactory,
+            $directoryData,
+            $stockRegistry,
+            $data
+        );
         $this->methodSource = $methodSource;
+        $this->requestShipment = $requestShipment;
+        $this->getContainerTypesOptions = $getContainerTypesOptions;
+        $this->trackingFactory = $trackingFactory;
     }
 
     /**
@@ -74,7 +103,7 @@ class Carrier extends AbstractCarrier implements CarrierInterface
             return false;
         }
         /** @var Result $result */
-        $result = $this->rateResultFactory->create();
+        $result = $this->_rateFactory->create();
         foreach ($this->getAllowedMethods() as $code => $title) {
             $method = $this->createResultMethod($code, $title);
             $result->append($method);
@@ -95,6 +124,30 @@ class Carrier extends AbstractCarrier implements CarrierInterface
         return $values;
     }
 
+    public function getContainerTypes(?DataObject $params = null): array
+    {
+        return $this->getContainerTypesOptions->execute($params);
+    }
+
+    /**
+     * @param string|string[] $trackings
+     * @return TrackingResult
+     */
+    public function getTracking($trackings): TrackingResult
+    {
+        if (!\is_array($trackings)) {
+            $trackings = [$trackings];
+        }
+        $trackingResult = $this->_trackFactory->create();
+        foreach ($trackings as $number) {
+            /** @var Tracking $tracking */
+            $tracking = $this->trackingFactory->create();
+            $tracking->setTracking($number);
+            $trackingResult->append($tracking);
+        }
+        return $trackingResult;
+    }
+
     /**
      * @param string $methodCode
      * @param string $methodTitle
@@ -103,8 +156,8 @@ class Carrier extends AbstractCarrier implements CarrierInterface
     private function createResultMethod(string $methodCode, string $methodTitle): Method
     {
         /** @var Method $method */
-        $method = $this->rateMethodFactory->create();
-        $method->setCarrier('mb_inpost');
+        $method = $this->_rateMethodFactory->create();
+        $method->setCarrier('mbinpost');
         $method->setCarrierTitle($this->getConfigData('title'));
         $method->setMethod($methodCode);
         $method->setMethodTitle($methodTitle);
@@ -123,9 +176,14 @@ class Carrier extends AbstractCarrier implements CarrierInterface
         $methods = $this->methodSource->toOptionArray();
         foreach ($methods as $method) {
             if ($method['value'] === $code) {
-                return $method['label'];
+                return (string) $method['label'];
             }
         }
         return '';
+    }
+
+    protected function _doShipmentRequest(DataObject $request): DataObject
+    {
+        return $this->requestShipment->execute($request);
     }
 }

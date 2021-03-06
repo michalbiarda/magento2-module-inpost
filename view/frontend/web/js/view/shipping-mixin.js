@@ -22,7 +22,7 @@ define([
             },
             validateShippingInformation: function () {
                 if (quote.shippingMethod()
-                    && quote.shippingMethod().carrier_code === 'mb_inpost'
+                    && quote.shippingMethod().carrier_code === 'mbinpost'
                     && quote.shippingMethod().method_code === 'locker_standard'
                     && !quote.mbInpostLocker()
                 ) {

@@ -28,7 +28,7 @@ define([
 ) {
     'use strict';
 
-    var lockerMethodCode = 'mb_inpost_locker_standard';
+    var lockerMethodCode = 'mbinpost_locker_standard';
 
     return Component.extend({
         defaults: {

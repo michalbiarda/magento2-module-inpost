@@ -26,7 +26,7 @@ all:
 	$(GIT) clone $(SKELETON) .
 	$(MAKE) new \
 		project=$(COMPONENT_NAME) \
-		version=2.3.5-p2 \
+		version=2.4.2 \
 		edition=community \
 		unit_cases=packages/$(COMPONENT_NAME)/Test/Unit \
 		integration_cases=packages/$(COMPONENT_NAME)/Test/Integration \
@@ -34,4 +34,4 @@ all:
 	$(MKDIR) $(TARGET_PATH)
 	$(TAR) -xzvf $(ARCHIVE) -C $(TARGET_PATH)
 	$(RM) $(TMPDIR)
-#	$(MAKE) run cmd="composer\ require\ $(COMPONENT)"
+	$(MAKE) run cmd="composer\ require\ $(COMPONENT)"

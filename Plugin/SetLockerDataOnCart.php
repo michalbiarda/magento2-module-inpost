@@ -70,7 +70,7 @@ class SetLockerDataOnCart
      */
     private function isLockerMethodSelected(ShippingInformationInterface $addressInformation): bool
     {
-        return $addressInformation->getShippingCarrierCode() === 'mb_inpost' &&
+        return $addressInformation->getShippingCarrierCode() === 'mbinpost' &&
             $addressInformation->getShippingMethodCode() === 'locker_standard';
     }
 }

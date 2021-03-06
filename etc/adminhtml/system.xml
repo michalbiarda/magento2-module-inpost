@@ -6,49 +6,148 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
-    <system>
-        <section id="carriers" translate="label" type="text" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
-            <group id="mb_inpost" translate="label" type="text" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>MB Inpost</label>
-                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Title</label>
-                </field>
-                <field id="allowed_methods" translate="label" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Allowed Methods</label>
-                    <source_model>MB\Inpost\Model\Config\Source\Method</source_model>
-                    <can_be_empty>1</can_be_empty>
-                </field>
-                <field id="locker_standard_price" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Locker Standard Price</label>
-                    <frontend_class>validate-zero-or-greater</frontend_class>
-                </field>
-                <field id="courier_standard_price" translate="label" type="text" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Courier Standard Price</label>
-                    <frontend_class>validate-zero-or-greater</frontend_class>
-                </field>
-                <field id="sallowspecific" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Ship to Applicable Countries</label>
-                    <frontend_class>shipping-applicable-country</frontend_class>
-                    <source_model>Magento\Shipping\Model\Config\Source\Allspecificcountries</source_model>
-                </field>
-                <field id="specificcountry" translate="label" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Ship to Specific Countries</label>
-                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-                    <can_be_empty>1</can_be_empty>
-                </field>
-                <field id="showmethod" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Show Method if Not Applicable</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <frontend_class>shipping-skip-hide</frontend_class>
-                </field>
-                <field id="sort_order" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Sort Order</label>
-                </field>
-            </group>
-        </section>
-    </system>
+	<system>
+		<section id="carriers">
+			<group id="mbinpost" translate="label" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>MB Inpost</label>
+				<group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>General Settings</label>
+					<field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+						<label>Enabled</label>
+						<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+						<config_path>carriers/mbinpost/active</config_path>
+					</field>
+					<field id="api_mode" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+						<label>API Mode</label>
+						<source_model>MB\Inpost\Model\Config\Source\ApiMode</source_model>
+						<config_path>carriers/mbinpost/api_mode</config_path>
+					</field>
+					<field id="sandbox_organization_id" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+						<label>Sandbox Organization ID</label>
+						<depends>
+							<field id="carriers/mbinpost/general/api_mode">sandbox</field>
+						</depends>
+						<config_path>carriers/mbinpost/sandbox_organization_id</config_path>
+					</field>
+					<field id="production_organization_id" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+						<label>Production Organization ID</label>
+						<depends>
+							<field id="carriers/mbinpost/general/api_mode">production</field>
+						</depends>
+						<config_path>carriers/mbinpost/production_organization_id</config_path>
+					</field>
+					<field id="sandbox_auth_token" translate="label" type="obscure" sortOrder="16" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+						<label>Sandbox Auth Token</label>
+						<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+						<depends>
+							<field id="carriers/mbinpost/general/api_mode">sandbox</field>
+						</depends>
+						<config_path>carriers/mbinpost/sandbox_auth_token</config_path>
+					</field>
+					<field id="production_auth_token" translate="label" type="obscure" sortOrder="16" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+						<label>Production Auth Token</label>
+						<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+						<depends>
+							<field id="carriers/mbinpost/general/api_mode">production</field>
+						</depends>
+						<config_path>carriers/mbinpost/production_auth_token</config_path>
+					</field>
+					<field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+						<label>Title</label>
+						<config_path>carriers/mbinpost/title</config_path>
+					</field>
+					<field id="allowed_methods" translate="label" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+						<label>Allowed Methods</label>
+						<source_model>MB\Inpost\Model\Config\Source\Method</source_model>
+						<can_be_empty>1</can_be_empty>
+						<config_path>carriers/mbinpost/allowed_methods</config_path>
+					</field>
+					<!-- For now only domestic Polish shipments are handled
+					<field id="sallowspecific" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+						<label>Ship to Applicable Countries</label>
+						<frontend_class>shipping-applicable-country</frontend_class>
+						<source_model>Magento\Shipping\Model\Config\Source\Allspecificcountries</source_model>
+						<config_path>carriers/mbinpost/sallowspecific</config_path>
+					</field>
+					<field id="specificcountry" translate="label" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+						<label>Ship to Specific Countries</label>
+						<source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+						<can_be_empty>1</can_be_empty>
+						<config_path>carriers/mbinpost/specificcountry</config_path>
+					</field>
+					-->
+					<field id="showmethod" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+						<label>Show Method if Not Applicable</label>
+						<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+						<frontend_class>shipping-skip-hide</frontend_class>
+						<config_path>carriers/mbinpost/showmethod</config_path>
+					</field>
+					<field id="sort_order" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+						<label>Sort Order</label>
+						<config_path>carriers/mbinpost/sort_order</config_path>
+					</field>
+				</group>
+				<group id="locker_standard" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Locker Standard Settings</label>
+					<field id="price" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+						<label>Price</label>
+						<frontend_class>validate-zero-or-greater</frontend_class>
+						<config_path>carriers/mbinpost/locker_standard_price</config_path>
+					</field>
+					<field id="sending_method" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+						<label>Sending method</label>
+						<source_model>MB\Inpost\Model\Config\Source\SendingMethod\LockerStandard</source_model>
+						<config_path>carriers/mbinpost/locker_standard_sending_method</config_path>
+					</field>
+					<field id="dropoff_point" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+						<label>Drop-off point</label>
+						<config_path>carriers/mbinpost/locker_standard_dropoff_point</config_path>
+						<depends>
+							<field id="carriers/mbinpost/locker_standard/sending_method">parcel_locker</field>
+						</depends>
+					</field>
+				</group>
+				<group id="courier_c2c" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Courier C2C Settings</label>
+					<field id="price" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+						<label>Price</label>
+						<frontend_class>validate-zero-or-greater</frontend_class>
+						<config_path>carriers/mbinpost/courier_c2c_price</config_path>
+					</field>
+					<field id="sending_method" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+						<label>Sending method</label>
+						<source_model>MB\Inpost\Model\Config\Source\SendingMethod\CourierC2C</source_model>
+						<config_path>carriers/mbinpost/courier_c2c_sending_method</config_path>
+					</field>
+					<field id="dropoff_point" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+						<label>Drop-off point</label>
+						<config_path>carriers/mbinpost/courier_c2c_dropoff_point</config_path>
+						<depends>
+							<field id="carriers/mbinpost/courier_c2c/sending_method">parcel_locker</field>
+						</depends>
+					</field>
+				</group>
+				<group id="courier_standard" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Courier Standard Settings</label>
+					<field id="price" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+						<label>Price</label>
+						<frontend_class>validate-zero-or-greater</frontend_class>
+						<config_path>carriers/mbinpost/courier_standard_price</config_path>
+					</field>
+					<field id="sending_method" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+						<label>Sending method</label>
+						<source_model>MB\Inpost\Model\Config\Source\SendingMethod\CourierStandard</source_model>
+						<config_path>carriers/mbinpost/courier_standard_sending_method</config_path>
+					</field>
+					<field id="dropoff_point" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+						<label>Drop-off point</label>
+						<config_path>carriers/mbinpost/courier_standard_dropoff_point</config_path>
+						<depends>
+							<field id="carriers/mbinpost/courier_standard/sending_method">courier_pok</field>
+						</depends>
+					</field>
+				</group>
+			</group>
+		</section>
+	</system>
 </config>

@@ -6,15 +6,21 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
-    <default>
-        <carriers>
-            <mb_inpost>
-                <active>0</active>
-                <title>Inpost</title>
-                <sallowspecific>0</sallowspecific>
-                <sort_order>15</sort_order>
-                <model>MB\Inpost\Model\Carrier</model>
-            </mb_inpost>
-        </carriers>
-    </default>
+	<default>
+		<carriers>
+			<mbinpost>
+				<active>0</active>
+				<title>Inpost</title>
+				<sallowspecific>1</sallowspecific>
+				<specificcountry>PL</specificcountry>
+				<sort_order>15</sort_order>
+				<model>MB\Inpost\Model\Carrier</model>
+				<api_mode>sandbox</api_mode>
+				<sandbox_base_uri>https://sandbox-api-shipx-pl.easypack24.net</sandbox_base_uri>
+				<production_base_uri>https://api-shipx-pl.easypack24.net</production_base_uri>
+				<sandbox_organization_id/>
+				<sandbox_auth_token/>
+			</mbinpost>
+		</carriers>
+	</default>
 </config>

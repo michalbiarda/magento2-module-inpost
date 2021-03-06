@@ -8,7 +8,10 @@
     }
   ],
   "require": {
-    "php": "~7.2.0||~7.3.0"
+    "php": "~7.4.0",
+    "michalbiarda/shipx-php-sdk": "1.0.0-alpha6",
+    "php-http/curl-client": "^2.2.0",
+    "http-interop/http-factory-guzzle": "^1.0.0"
   },
   "type": "magento2-module",
   "autoload": {
