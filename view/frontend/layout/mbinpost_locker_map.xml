@@ -15,7 +15,11 @@
     <body>
         <referenceContainer name="root">
             <block name="locker.map" class="Magento\Framework\View\Element\Template"
-                   template="MB_Inpost::locker/map.phtml" />
+                   template="MB_Inpost::locker/map.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">MB\Inpost\ViewModel\Map</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

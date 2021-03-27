@@ -28,7 +28,8 @@ define([
 ) {
     'use strict';
 
-    var lockerMethodCode = 'mbinpost_locker_standard';
+    var lockerMethodCode = 'mbinpost_locker_standard',
+        modalInitialized = false;
 
     return Component.extend({
         defaults: {
@@ -58,6 +59,10 @@ define([
             return url.build('mbinpost/locker/map');
         },
         initModal: function () {
+            if (modalInitialized) {
+                return;
+            }
+            var $modalContent = $('#locker-modal-content');
             modal(
                 {
                     type: 'popup',
@@ -67,10 +72,13 @@ define([
                     buttons: [],
                     modalClass: 'mb-inpost-modal-choose-locker'
                 },
-                $('#locker-modal-content')
+                $modalContent
             );
+            $modalContent.append($('<iframe>').attr('src', this.getIframeSrc()));
+            modalInitialized = true;
         },
         openModal: function () {
+            this.initModal();
             $('#locker-modal-content').modal('openModal');
         },
         closeModal: function () {

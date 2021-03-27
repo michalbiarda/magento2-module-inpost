@@ -20,6 +20,14 @@
 				<production_base_uri>https://api-shipx-pl.easypack24.net</production_base_uri>
 				<sandbox_organization_id/>
 				<sandbox_auth_token/>
+				<locker_standard_map_type>osm</locker_standard_map_type>
+				<locker_standard_map_use_geolocation>1</locker_standard_map_use_geolocation>
+				<locker_standard_map_initial_zoom>13</locker_standard_map_initial_zoom>
+				<locker_standard_map_details_min_zoom>15</locker_standard_map_details_min_zoom>
+				<locker_standard_map_autocomplete_zoom>14</locker_standard_map_autocomplete_zoom>
+				<locker_standard_map_visible_points_min_zoom>13</locker_standard_map_visible_points_min_zoom>
+				<locker_standard_map_default_location_lat>52.229807</locker_standard_map_default_location_lat>
+				<locker_standard_map_default_location_long>21.011595</locker_standard_map_default_location_long>
 			</mbinpost>
 		</carriers>
 	</default>

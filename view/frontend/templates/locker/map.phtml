@@ -4,20 +4,22 @@
  * See LICENSE.txt for license details.
  */
 
-/** @var $block Magento\Framework\View\Element\Template */
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \MB\Inpost\ViewModel\Map $viewModel */
+$viewModel = $block->getData('view_model');
 ?>
 <script type="text/javascript">
     window.easyPackAsyncInit = function () {
-        easyPack.init({
-            mapType: 'osm',
-            searchType: 'osm',
-        });
+        easyPack.init(<?= $viewModel->getJsConfig() ?>);
         easyPack.mapWidget('locker-map-wrapper', function(point) {
             window.parent.postMessage(
                 {"mb_inpost_locker": point},
-                "<?= /* @noEscape */ $block->getBaseUrl() ?>"
+                "<?= $escaper->escapeUrl($block->getBaseUrl()) ?>"
             );
         });
     };
 </script>
-<div id="locker-map-wrapper"></div>
+<div id="locker-map-wrapper">
+    <span class="loading"></span>
+</div>

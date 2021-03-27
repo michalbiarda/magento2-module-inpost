@@ -10,18 +10,27 @@ body {
   margin: 0;
   height: 100%;
 }
-.easypack-widget {
-  .map-list-row {
-    .map-list-flex {
-      .list-widget {
-        min-height: 200px;
-      }
-    }
+#locker-map-wrapper {
+  .loading {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: block;
+    left: 0;
+    right: 0;
+    background: url('../../images/loader-1.gif') no-repeat center center;
   }
-  .search-widget {
-    .search-input {
-      // Fix for input height vs button height
-      height: 50px;
+
+  &.easypack-widget {
+    .loading {
+      display: none;
+    }
+    .map-list-row {
+      .map-list-flex {
+        .list-widget {
+          min-height: 200px;
+        }
+      }
     }
   }
 }

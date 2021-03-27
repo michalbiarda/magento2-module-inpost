@@ -87,7 +87,7 @@
 						<config_path>carriers/mbinpost/sort_order</config_path>
 					</field>
 				</group>
-				<group id="locker_standard" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+				<group id="locker_standard" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
 					<label>Locker Standard Settings</label>
 					<field id="price" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
 						<label>Price</label>
@@ -106,6 +106,61 @@
 							<field id="carriers/mbinpost/locker_standard/sending_method">parcel_locker</field>
 						</depends>
 					</field>
+					<field id="map_type" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+						<label>Map type</label>
+						<source_model>MB\Inpost\Model\Config\Source\MapType</source_model>
+						<config_path>carriers/mbinpost/locker_standard_map_type</config_path>
+					</field>
+					<field id="search_type" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+						<label>Search type</label>
+						<source_model>MB\Inpost\Model\Config\Source\MapType</source_model>
+						<config_path>carriers/mbinpost/locker_standard_search_type</config_path>
+					</field>
+					<group id="map_details" translate="label" sortOrder="1000" showInDefault="1" showInWebsite="1" showInStore="1">
+						<label>Map details</label>
+						<field id="google_key" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+							<label>Google key</label>
+							<config_path>carriers/mbinpost/locker_standard_map_google_key</config_path>
+							<depends>
+								<field id="carriers/mbinpost/locker_standard/map_type">google</field>
+							</depends>
+						</field>
+						<field id="use_geolocation" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+							<label>Use geolocation</label>
+							<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+							<config_path>carriers/mbinpost/locker_standard_map_use_geolocation</config_path>
+						</field>
+						<field id="initial_zoom" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+							<label>Initial zoom</label>
+							<validate>validate-greater-than-zero</validate>
+							<config_path>carriers/mbinpost/locker_standard_map_initial_zoom</config_path>
+						</field>
+						<field id="details_min_zoom" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+							<label>Details min zoom</label>
+							<validate>validate-greater-than-zero</validate>
+							<config_path>carriers/mbinpost/locker_standard_map_details_min_zoom</config_path>
+						</field>
+						<field id="autocomplete_zoom" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+							<label>Autocomplete zoom</label>
+							<validate>validate-greater-than-zero</validate>
+							<config_path>carriers/mbinpost/locker_standard_map_autocomplete_zoom</config_path>
+						</field>
+						<field id="visible_points_min_zoom" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+							<label>Visible points min zoom</label>
+							<validate>validate-greater-than-zero</validate>
+							<config_path>carriers/mbinpost/locker_standard_map_visible_points_min_zoom</config_path>
+						</field>
+						<field id="default_location_lat" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+							<label>Default location latitude</label>
+							<validate>validate-number</validate>
+							<config_path>carriers/mbinpost/locker_standard_map_default_location_lat</config_path>
+						</field>
+						<field id="default_location_long" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+							<label>Default location longitude</label>
+							<validate>validate-number</validate>
+							<config_path>carriers/mbinpost/locker_standard_map_default_location_long</config_path>
+						</field>
+					</group>
 				</group>
 				<group id="courier_c2c" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
 					<label>Courier C2C Settings</label>
